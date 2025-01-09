@@ -17,3 +17,12 @@ After compilation the binary `mars' will be created in the working
 directory, e.g. you may call it from this directory via
 
  S ./mars -h
+
+Compiling in M3 Mac
+===================
+
+It can be compiled with clang.
+
+You will have to install libomp to allow the flag -fopenmp to work with.
+
+   brew install libomp

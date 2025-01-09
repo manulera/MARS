@@ -1,0 +1,5 @@
+*.o
+libsdsl/
+sdsl-lite/
+seqan/
+mars

@@ -2,9 +2,28 @@ MF=     Makefile
  
 CC=     g++
  
-CFLAGS= -g -fopenmp -D_USE_OMP -msse4.2 -O3 -fomit-frame-pointer -funroll-loops  
+CFLAGS= -g -D_USE_OMP -O3 -fomit-frame-pointer -funroll-loops -pthread
+
+# Detect OS for platform-specific settings
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    # macOS
+    RPATH_FLAG := -Wl,-rpath,$(PWD)/libsdsl/lib
+    # OpenMP flags for macOS
+    OPENMP_FLAGS := -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
+    OPENMP_LIBS := -L/opt/homebrew/opt/libomp/lib -lomp
+    CFLAGS += $(OPENMP_FLAGS)
+    LFLAGS += $(OPENMP_LIBS)
+else
+    # Linux and others
+    RPATH_FLAG := -Wl,-rpath=$(PWD)/libsdsl/lib
+    CFLAGS += -fopenmp
+    LFLAGS += -fopenmp
+endif
+
+
  
-LFLAGS= -std=c++11 -I ./ -I ./libsdsl/include/ -L ./libsdsl/lib/ -lsdsl -ldivsufsort -ldivsufsort64 -Wl,-rpath=$(PWD)/libsdsl/lib
+LFLAGS= -std=c++11 -I ./ -I ./libsdsl/include/ -L ./libsdsl/lib/ -lsdsl -ldivsufsort -ldivsufsort64 $(RPATH_FLAG) $(OPENMP_LIBS)
  
 EXE=    mars
  
@@ -22,7 +41,7 @@ HD=     EBLOSUM62.h EDNAFULL.h mars.h sacsc.h ced.h nj.h RestrictedLevenshtein.h
 OBJ=    $(SRC:.cc=.o) 
  
 .cc.o: 
-	$(CC) $(CFLAGS)-c $(LFLAGS) $< 
+	$(CC) $(CFLAGS) -c $(LFLAGS) $< 
  
 all:    $(EXE) 
  
