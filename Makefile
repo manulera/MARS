@@ -9,9 +9,11 @@ UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
     # macOS
     RPATH_FLAG := -Wl,-rpath,$(PWD)/libsdsl/lib
+    # Dynamically get Homebrew prefix (libomp path)
+    BREW_PREFIX := $(shell brew --prefix libomp)
     # OpenMP flags for macOS
-    OPENMP_FLAGS := -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
-    OPENMP_LIBS := -L/opt/homebrew/opt/libomp/lib -lomp
+    OPENMP_FLAGS := -Xpreprocessor -fopenmp -I$(BREW_PREFIX)/include
+    OPENMP_LIBS := -L$(BREW_PREFIX)/lib -lomp
     CFLAGS += $(OPENMP_FLAGS)
     LFLAGS += $(OPENMP_LIBS)
 else
