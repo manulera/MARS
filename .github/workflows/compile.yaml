@@ -10,22 +10,32 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, macos-14] # macos-14 is for M3/ARM
         include:
           - os: ubuntu-latest
             name: Linux
+            container: debian:bookworm
+          - os: ubuntu-latest
+            name: Linux-Native
           - os: macos-latest
             name: macOS Intel
           - os: macos-14
             name: macOS ARM
 
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Dependencies (Linux)
-        if: matrix.os == 'ubuntu-latest'
+      - name: Install Dependencies (Linux - Container)
+        if: matrix.container == 'debian:bookworm'
+        run: |
+          apt-get update
+          apt-get install -y build-essential cmake
+          ./pre-install.sh
+
+      - name: Install Dependencies (Linux - Native)
+        if: matrix.os == 'ubuntu-latest' && matrix.container == ''
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential cmake
