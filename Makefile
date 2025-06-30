@@ -2,7 +2,7 @@ MF=     Makefile
  
 CC=     g++
  
-CFLAGS= -g -D_USE_OMP -O3 -fomit-frame-pointer -funroll-loops -pthread
+CFLAGS= -g -D_USE_OMP -O3 -fomit-frame-pointer -funroll-loops -pthread -include cstdint
 
 # Detect OS for platform-specific settings
 UNAME_S := $(shell uname -s)
