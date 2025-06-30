@@ -26,7 +26,6 @@
 #include <fstream>
 #include <float.h>
 #include <limits.h>
-#include <ctype.h>
 #include <omp.h>
 #include "mars.h"
 #include "sacsc.h"
@@ -136,7 +135,7 @@ int main(int argc, char **argv)
 
 			seq_id[ num_seqs ] = NULL;
 
-			while ( ( c = fgetc( in_fd ) ) != EOF && c != '\n' )
+			while ( ( c = fgetc( in_fd ) ) != EOF && c != '\n' && c != 255 )
 			{
 				if ( seq_id_len >= max_alloc_seq_id_len )
 				{
@@ -160,7 +159,7 @@ int main(int argc, char **argv)
 
 		seq[ num_seqs ] = NULL;
 
-		while ( ( c = fgetc( in_fd ) ) != EOF && c != '>' )
+		while ( ( c = fgetc( in_fd ) ) != EOF && c != '>' && c != 255 )
 		{
 			if( seq_len == 0 && c == '\n' )
 			{
@@ -203,7 +202,7 @@ int main(int argc, char **argv)
 			num_seqs++;
 		}
 		
-	} while( c != EOF );
+	} while( c != EOF && c != 255 );
 
 	seq[ num_seqs ] = NULL;
 
