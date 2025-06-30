@@ -26,6 +26,7 @@
 #include <fstream>
 #include <float.h>
 #include <limits.h>
+#include <ctype.h>
 #include <omp.h>
 #include "mars.h"
 #include "sacsc.h"
