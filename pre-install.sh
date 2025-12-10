@@ -24,5 +24,4 @@ sed -i 's/tree\.m_select0/tree.m_bv_select0/g' include/sdsl/louds_tree.hpp
 
 ./install.sh "$(pwd)"/libsdsl
 
-cd ../
-
+mv libsdsl/ ..
