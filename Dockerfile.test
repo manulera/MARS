@@ -1,0 +1,7 @@
+FROM python:3.12-alpine AS builder
+
+RUN apk update
+RUN apk add build-base bash cmake
+
+COPY . /mars
+WORKDIR /mars
